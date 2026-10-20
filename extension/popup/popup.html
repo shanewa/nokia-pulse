@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NokiaPulse</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <div class="brand">
+        <img src="../icons/icon32.png" alt="" width="22" height="22">
+        <span class="brand-name">NokiaPulse</span>
+      </div>
+      <div class="header-actions">
+        <select id="symbol-select" class="select-compact" aria-label="Stock symbol"></select>
+        <button id="refresh-btn" class="icon-btn" type="button" title="Refresh now" aria-label="Refresh now">&#x21bb;</button>
+      </div>
+    </header>
+
+    <nav class="tabs" role="tablist" aria-label="Main views">
+      <button class="tab active" type="button" data-tab="overview" role="tab" aria-controls="view-overview" aria-selected="true">Overview</button>
+      <button class="tab" type="button" data-tab="alerts" role="tab" aria-controls="view-alerts" aria-selected="false">Alerts<span id="alert-count" class="tab-count" hidden></span></button>
+      <button class="tab" type="button" data-tab="settings" role="tab" aria-controls="view-settings" aria-selected="false">Settings</button>
+    </nav>
+
+    <div id="error-banner" class="banner banner-error" role="alert" hidden></div>
+    <div id="notify-banner" class="banner banner-warn" role="status" hidden>Notifications are off. Allow notifications in your system or Edge settings to receive price alerts.</div>
+
+    <section id="view-overview" class="view" role="tabpanel" aria-label="Overview">
+      <div class="card price-card">
+        <div class="market-line">
+          <span id="exchange-tag" class="tag"></span>
+          <span id="market-state" class="tag"></span>
+        </div>
+        <div id="company" class="company"></div>
+        <div id="price" class="price">—</div>
+        <div id="change" class="change"></div>
+        <div id="updated" class="muted small"></div>
+      </div>
+
+      <div class="card chart-card">
+        <div class="range-tabs" role="group" aria-label="Chart time range">
+          <button class="range active" type="button" data-range="1D" aria-label="1 day" aria-pressed="true">1D</button>
+          <button class="range" type="button" data-range="1W" aria-label="1 week" aria-pressed="false">1W</button>
+          <button class="range" type="button" data-range="1M" aria-label="1 month" aria-pressed="false">1M</button>
+        </div>
+        <div id="chart" class="chart"></div>
+      </div>
+
+      <div class="card stats">
+        <div class="stat"><span class="muted">Prev. close</span><b id="stat-prev">—</b></div>
+        <div class="stat"><span class="muted">Day high</span><b id="stat-high">—</b></div>
+        <div class="stat"><span class="muted">Day low</span><b id="stat-low">—</b></div>
+      </div>
+
+      <div class="section-head">
+        <h2>Price alerts</h2>
+        <button id="overview-add" class="link-btn" type="button" aria-label="Add price alert">+ Add</button>
+      </div>
+      <div id="overview-alerts" class="alert-summary"></div>
+    </section>
+
+    <section id="view-alerts" class="view" role="tabpanel" aria-label="Alerts" hidden>
+      <form id="alert-form" class="card form" autocomplete="off">
+        <div class="form-title">Add price alert</div>
+        <div id="form-context" class="muted small"></div>
+
+        <label class="field-label" id="type-label">Trigger condition</label>
+        <div class="segmented" id="type-seg" role="group" aria-labelledby="type-label">
+          <label><input type="radio" name="type" value="above" aria-label="At or above target" checked><span>At or above</span></label>
+          <label><input type="radio" name="type" value="below" aria-label="At or below target"><span>At or below</span></label>
+          <label><input type="radio" name="type" value="cross" aria-label="Crosses target"><span>Crosses</span></label>
+        </div>
+
+        <label class="field-label" for="target-input">Target price <span id="target-currency"></span></label>
+        <input id="target-input" class="input" type="number" inputmode="decimal" step="0.001" min="0" placeholder="e.g. 5.00" aria-describedby="alert-preview form-error" required>
+
+        <label class="field-label" for="frequency-select">Alert frequency</label>
+        <select id="frequency-select" class="select">
+          <option value="once">Once: pause after triggering</option>
+          <option value="every">Repeat: reset on the other side</option>
+        </select>
+
+        <div id="alert-preview" class="preview"></div>
+        <div id="form-error" class="form-error" role="alert" hidden></div>
+        <button class="btn primary" type="submit">Create alert</button>
+      </form>
+
+      <div class="section-head"><h2>My alerts</h2></div>
+      <div id="alert-list" class="alert-list"></div>
+
+      <div class="section-head">
+        <h2>Alert history</h2>
+        <button id="clear-history" class="link-btn" type="button" aria-label="Clear alert history">Clear</button>
+      </div>
+      <div id="history-list" class="history-list"></div>
+    </section>
+
+    <section id="view-settings" class="view" role="tabpanel" aria-label="Settings" hidden>
+      <div class="card settings">
+        <div class="setting-row">
+          <label for="set-refresh">Refresh interval</label>
+          <select id="set-refresh" class="select">
+            <option value="30">30 seconds</option>
+            <option value="60">1 minute</option>
+            <option value="300">5 minutes</option>
+            <option value="900">15 minutes</option>
+          </select>
+        </div>
+        <div class="setting-row">
+          <label for="set-theme">Theme</label>
+          <select id="set-theme" class="select">
+            <option value="auto">System</option>
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+          </select>
+        </div>
+        <div class="setting-row">
+          <label for="set-badge">Show price on icon</label>
+          <input id="set-badge" type="checkbox" class="switch">
+        </div>
+        <div class="setting-row">
+          <label>Notifications</label>
+          <span id="notify-status" class="muted"></span>
+        </div>
+        <button id="test-notify" class="btn" type="button">Send test notification</button>
+      </div>
+
+      <div class="card notes small muted">
+        <p><b>Market data:</b> Quotes come from Yahoo Finance's public API. Helsinki quotes may be delayed by about 15 minutes. For reference only, not investment advice.</p>
+        <p><b>NOKIA</b> trades on Nasdaq Helsinki (EUR). <b>NOK</b> is the NYSE ADR (USD). Alert targets use the selected stock's currency.</p>
+        <p>Settings and alerts stay on this device; there is no backend server. Prices cannot be checked while the browser is closed.</p>
+      </div>
+    </section>
+  </div>
+  <script src="../lib/quote.js"></script>
+  <script src="../lib/alerts.js"></script>
+  <script src="../lib/store.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
