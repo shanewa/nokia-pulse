@@ -181,3 +181,4 @@ body {
 .settings .select, .switch { flex-shrink: 0; }
 .switch { width: 16px; height: 16px; accent-color: var(--accent); }
 .notes p + p { margin-top: 6px; }
+.notes a { color: var(--accent); text-underline-offset: 2px; }
