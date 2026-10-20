@@ -26,6 +26,7 @@ Quotes use the unofficial Yahoo Finance chart endpoint (`query1.finance.yahoo.co
 ## Development
 
 ```
+npm ci                               # Install development dependencies
 node scripts/generate-icons.mjs        # Generate icons
 node --test "tests/*.test.mjs"          # Run tests
 node scripts/pack-extension.mjs        # Package dist/NokiaPulse-<version>.zip
@@ -48,3 +49,11 @@ extension/
   popup/            # Overview, alerts, and settings
   icons/
 ```
+
+## Documentation
+
+- [Documentation index](docs/README.md)
+- [Architecture and implementation limits](docs/architecture.md)
+- [Privacy policy](docs/PRIVACY.md)
+- [Edge Add-ons listing draft](docs/store-listing.md)
+- [Release and store review checklist](docs/store-review.md)
