@@ -1,6 +1,20 @@
-# NokiaPulse
+<div align="center">
+  <h1>NokiaPulse</h1>
+  <p align="center">
+    <img src="./extension/icons/icon128.png" alt="NokiaPulse logo" width="140px" />
+    <br />
+    <i>Monitor Nokia stock prices and get notified when your target price is reached.</i>
+  </p>
+  <p align="center">
+    <img alt="Microsoft Edge" src="https://img.shields.io/badge/Microsoft%20Edge-Manifest%20V3-0078D7?style=flat-square&logo=microsoftedge&logoColor=white" />
+    <img alt="JavaScript" src="https://img.shields.io/badge/JavaScript-ES%20Modules-F7DF1E?style=flat-square&logo=javascript&logoColor=black" />
+    <img alt="Version 0.1.0" src="https://img.shields.io/badge/version-0.1.0-2E7D32?style=flat-square" />
+  </p>
+</div>
 
-Monitor Nokia stock prices and get notified when your target price is reached.
+<hr />
+
+## NokiaPulse
 
 Stay in sync with Nokia's stock price.
 
